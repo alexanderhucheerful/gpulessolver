@@ -1,0 +1,115 @@
+# gpules v1.0 默认配置
+# ───────────────────────────────────────────────────────────────────────
+# 说明：
+#   * 这是「演示/快速验证」规模（48x48x24，10 m 网格），单 CPU 上即可秒级跑完。
+#   * 生产规模见下方注释的推荐值；把 nx/ny/nz 放大到 200/200/100、dx=5 即可。
+#   * 本文件与 GPULESConfig 字段一一对应，可被 `gpules --config configs/default.yaml` 加载，
+#     命令行参数会覆盖同名键。
+# ───────────────────────────────────────────────────────────────────────
+mode: inference          # inference | train
+device: auto             # auto | cuda | mps | cpu
+seed: 42
+log_level: INFO
+
+# 网格（演示规模；生产推荐 nx=ny=200, nz=100, dx=dy=dz=5.0）
+nx: 48
+ny: 48
+nz: 24
+dx: 10.0
+dy: 10.0
+dz: 10.0
+
+# 物理常数（两线共享）
+omega: 7.292e-5
+lat: 23.1291
+lon: 113.2644
+g: 9.81
+kappa: 0.41
+z0: 1.0
+p_ref: 101325.0
+pt_ref: 300.0
+r_dry: 287.04
+cp_dry: 1005.0
+l_vap: 2.501e6
+epsilon: 0.622
+
+# Deardorff TKE SGS
+ce: 0.845
+ck: 0.094
+cnu: 0.10
+nu_min: 0.5
+tke_min: 1.0e-4
+pr_t: 0.3333333333333333
+sigma_e: 1.0
+
+# 平流策略
+advection: ws5           # ws5（高精度，inference 默认）| central2（可微，train 默认）
+ad_k2: 0.5
+ad_k4: 0.03125
+
+# 压力求解策略
+pressure_solver: multigrid   # multigrid | cg | jacobi | poisson_fft
+mg_levels: 4
+mg_vcycles: 3
+mg_smooth: 3
+jacobi_omega: 0.667
+pressure_tol: 1.0e-6
+cg_iters: 150
+
+# 时间积分
+time_integrator: ssprk3  # ssprk3（inference）| heun（train 内部）
+end_time: 60.0
+dt_init: 0.1
+dt_min: 0.005
+dt_max: 0.15
+cfl_max: 0.5
+vmax: 20.0
+wmax: 15.0
+div_max: 0.1
+
+# 边界与松弛
+relax_width: 5
+relax_strength: 0.3
+sponge_width: 8
+sponge_top: 10
+sponge_strength: 0.5
+
+# 物理过程开关
+use_coriolis: true
+use_building_drag: true
+use_wall_drag: true
+use_rayleigh: true
+use_excess_suppression: true
+ground_drag_layers: 2
+canopy_smooth: 5
+log_law_top: 15.0
+
+# Rayleigh 阻尼
+rayleigh_start: 0.75
+rayleigh_coef: 0.01
+
+# 可微近似参数（train 模式生效）
+use_soft_mask: true
+smooth_width: 10.0
+soft_sign_eps: 0.05
+gate_sharpness: 50.0
+softplus_sharpness: 8.0
+vel_cap_k: 8.0
+use_fp16: false
+double_projection: true
+
+# 训练配置（train 模式生效）
+train_window: 10
+train_epochs: 5
+learning_rate: 0.002
+ckpt_interval: 5
+l2_reg: 0.001
+palm_ref_u: [0.29, 0.75, 1.08, 1.90]
+palm_ref_v: [1.73, 3.66, 5.34, 8.22]
+palm_ref_k: [1, 9, 19, 39]
+
+# 输入/输出（相对路径会在运行时补全到 cwd/data/；演示请加 --synthetic）
+synthetic: false
+no_buildings: false
+diagnostics: true
+output: wind_data_gpu_3d.json

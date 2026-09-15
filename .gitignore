@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Generated outputs (run artifacts)
+*.json
+!configs/*.yaml
+!pyproject.toml
+
+# Data (large inputs, keep out of repo)
+data/
+*.nc
+*.nc4
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
