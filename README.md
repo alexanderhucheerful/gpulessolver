@@ -1,10 +1,9 @@
-# gpules v1.0 — GPU 城市风场大涡模拟
+# gpules v1.0 — GPU 城市风场大涡模拟-适用于AI气象大模型降尺度风场模拟
 
-> 基于 PyTorch 的**城市尺度大涡模拟（LES）**求解器，用于预测建筑群周边的三维风场。
-> 本项目合并了两条研发线并重构为统一、可测试、可交付的工程包：
->
-> - **高精度线（v9）**：5 阶 Wicker–Skamarock 平流 + 几何多网格压力求解 + SSP-RK3 时间积分 + Deardorff TKE SGS（含虚位温浮力）。
-> - **可微线（diff-v1）**：2 阶中心差分 + Jameson 人工耗散 + RFFT 谱压力求解 + Heun 积分 + **10 个可学习物理参数**（在 PALM 参考场监督下用 Adam 自动调参）。
+> 基于 PyTorch 的大涡模拟（LES）求解器，用于预测建筑群周边的三维风场。
+
+> 5 阶 Wicker–Skamarock 平流 + 几何多网格压力求解 + SSP-RK3 时间积分 + Deardorff TKE SGS（含虚位温浮力）。
+> 2 阶中心差分 + Jameson 人工耗散 + RFFT 谱压力求解 + Heun 积分 + **10 个可学习物理参数**（在 PALM 参考场监督下用 Adam 自动调参）。
 
 ---
 
